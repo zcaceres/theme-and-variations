@@ -22,6 +22,7 @@ def generate_composition(number_of_tracks):
     note_durations = []
     for i in range(0, 54):
         note_durations.append(random.choice(note_choices))
+
     for i in range(0, number_of_tracks):
         counter = 0
         s = midi.read_midifile("theme_and_variations-{0}.midi".format(i))
@@ -29,7 +30,6 @@ def generate_composition(number_of_tracks):
             note.tick = note_durations[counter]
             counter += 1
         midi.write_midifile("theme_and_variations-{0}.midi".format(i), s)
-
 
     for i in range(0, number_of_tracks):
         s = midi.read_midifile("theme_and_variations-{0}.midi".format(i))
@@ -52,26 +52,33 @@ def generate_composition(number_of_tracks):
     pattern.format = 1
     pattern.append(head_of_file)
     pattern.append(t)
+    print pattern
    
-    # Make file
+    # Make file and move it to download directory to present to user
     midi.write_midifile("Theme-And-Variations.midi", pattern)
     print " DONE! "
 
 
 def print_test_file():
     test_file = midi.read_midifile("small-world.mid")
-    print (test_file)
+    print(test_file)
 
 
-if __name__ == '__main__':
+def make_composition():
     print " GENERATING THEME AND VARIATIONS "
-    theme = generate_theme_from_numbers() # Generate data for composition
-    segments = compose_variations(theme) # compose variations
+    theme = generate_theme_from_numbers()
+    segments = compose_variations(theme)
     number_of_tracks = make_files(segments)
     generate_composition(number_of_tracks)
 
+if __name__ == '__main__':
+    make_composition()
+
+
 
 """
+This is what inside of track looks like:
+
 midi.Track(\
   [midi.ControlChangeEvent(tick=0, channel=5, data=[0, 0]),
    midi.ProgramChangeEvent(tick=0, channel=5, data=[36]),
